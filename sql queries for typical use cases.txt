@@ -1,0 +1,80 @@
+/* Find all employes available between given dates to place him at work*/ 
+SELECT *  
+FROM Employe  
+WHERE AvabiliDateAndTime BETWEEN '01/01/2022 00:00:00:000' AND '01/03/2022 00:00:00.000'; 
+
+/*Find contacts of customer who brought the car to contact him about repair*/ 
+SELECT Name, Phone, Mail  
+FROM Customer  
+WHERE LicenNum = "ABC-123" ;
+
+/*Find all operations needed for current distance for regular maintenance*/ 
+SELECT *  
+FROM Operation, (Select * FROM Regular_maintenance WHERE OrderID=456) AS X  
+WHERE Operation.Distance <= X.Distance; 
+
+/*Find all parts used in work to add them to bill*/ 
+SELECT *  
+FROM SparePart 
+WHERE OrderID=123; 
+
+/*Find all Reminders of Invoice to calculate new sum*/ 
+SELECT * 
+FROM Reminder 
+WHERE OrderID=123; 
+
+/*Find customers with unpaid invoices to send reminders*/ 
+SELECT Name, Phone, Mail, Address  
+FROM Customer JOIN Invoice ON Invoice.CustomerID=Customer.CurstomerID  
+WHERE Invoice.status = "unpaid"; 
+
+/*Count number of reminders for each Invoice to make statistic*/ 
+SELECT OrderID, COUNT(OrderID) 
+FROM Reminder 
+GROUP BY OrderID 
+HAVING COUNT (OrderID) >=1; 
+
+/* Find all owners of car if police asks*/ 
+SELECT Name  
+FROM Car JOIN Owner ON Car.LicenNum=Owner.LicenNum 
+WHERE Car.LicenNum="ABC-123";  
+
+/*Find all unpaid invoices to send reminders*/ 
+SELECT *  
+FROM Invoice  
+WHERE status="unpaid"; 
+
+/*Find device with  type available between dates to book it for worker*/ 
+SELECT *  
+FROM Device  
+WHERE DeviceType="Hoister" AND AvabilityDateAndTime BETWEEN "01/01/2022 00:00:00:000" AND "01/03/2022 00:00:00.000"; 
+
+/*Find all Invoices with deadline today to send reminders*/ 
+SELECT *  
+FROM Invoice  
+WHERE Deadline= "01/01/2022 00:00:00:000"; 
+
+/* Find all Absences of employe to see how good worker he is*/ 
+Select*  
+From Absences  
+Where EmployeID=1000; 
+
+/*Find  which employees are working on a given order  so they get paid*/ 
+SELECT *  
+FROM Employe JOIN Reservation_of_operation ON Employe.ID = Reservation_of_operation.EmployeID  
+WHERE Reservation_of_operation.OrderID = 123 ;
+
+/* Find  which devices are reserved on in a given time interval to find them if they aren't in storage*/ 
+SELECT *  
+FROM Device JOIN Reservation_of_operation ON Device.DeviceID = Reservation_of_operation.DeviceID  
+WHERE Reservation_of_operation.Starts ="02/01/2022 00:00:00:000" 
+AND Reservation_of_operation.Ends= "03/01/2022 00:07:00:000" ;
+ 
+
+/* Find all invoices for a given owner (all invoices for all cars own by a given person) to see how good client he is*/ 
+SELECT *  
+FROM Invoice JOIN Customer ON CustomerID  
+WHERE Customer.LicenNum =  
+(SELECT LicenNum  
+FROM Owner  
+WHERE Owner.Name = "Mary Holinen"); 

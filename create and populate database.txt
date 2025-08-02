@@ -1,0 +1,393 @@
+CREATE TABLE Reminder(  
+
+OrderID INT ,  
+
+Extra INT,  
+
+NewSum INT, 
+
+FOREIGN KEY (OrderID) REFERENCES Invoice(OrderID) 
+
+); 
+
+ 
+
+CREATE TABLE Customer( 
+
+CurstomerID INT PRIMARY KEY, 
+
+LicenNum CHAR(50), 
+
+Name CHAR(50), 
+
+Phone INT, 
+
+Mail VARCHAR(319), 
+
+Address CHAR(200), 
+
+FOREIGN KEY (LicenNum) REFERENCES Car(LicenNum) 
+
+); 
+
+ 
+
+CREATE TABLE Employe(  
+
+ID INT PRIMARY KEY,  
+
+Name CHAR(50), 
+
+AvabiliDateAndTime DATETIME 
+
+); 
+
+ 
+
+ 
+
+CREATE TABLE Invoice(  
+
+OrderID INT PRIMARY KEY,  
+
+CustomerID INT,  
+
+EmployeID INT,  
+
+Hours INT,  
+
+Deadline DATETIME,  
+
+Status CHAR(30),  
+
+OriginalSum INT, 
+
+NewSum INT DEFAULT OriginalSum,  
+
+RemindersNo INT DEFAULT 0 
+
+); 
+
+ 
+
+CREATE TABLE Car(  
+
+LicenNum CHAR(50) PRIMARY KEY,  
+
+Distance INT 
+
+); 
+
+ 
+
+CREATE TABLE SparePart( 
+
+OrderID INT, 
+
+Partnumber INT, 
+
+Amount INT, 
+
+Sum INT, 
+
+FOREIGN KEY (OrderID) REFERENCES Invoice(OrderID) 
+
+); 
+
+ 
+
+CREATE TABLE Reservation_of_operation(  
+
+OrderID INT , 
+
+EmployeID INT, 
+
+DeviceID INT, 
+
+Starts DATETIME,  
+
+Ends DATETIME,  
+
+FOREIGN KEY (OrderID) REFERENCES Invoice(OrderID), 
+
+FOREIGN KEY (EmployeID) REFERENCES Employe(ID), 
+
+FOREIGN KEY (DeviceID) REFERENCES Device (DeviceID) 
+
+); 
+
+ 
+
+CREATE TABLE Absences(  
+
+EmployeID INT,  
+
+Starts DATETIME,  
+
+Ends DATETIME, 
+
+FOREIGN KEY (EmployeID) REFERENCES Employe (ID)  
+
+); 
+
+ 
+
+CREATE TABLE Repair(  
+
+RepairName CHAR(50),  
+
+OrderID INT ,  
+
+LicenNum CHAR(50), 
+
+DurationTotal INT,  
+
+FOREIGN KEY (LicenNum) REFERENCES Car(LicenNum),  
+
+FOREIGN KEY (OrderID) REFERENCES Invoice(OrderID)  
+
+); 
+
+ 
+
+CREATE TABLE Device( 
+
+DeviceID INT PRIMARY KEY, 
+
+DeviceType CHAR(50), 
+
+AvabilityDateAndTime DATETIME); 
+
+ 
+
+CREATE TABLE Operation( 
+
+Duration INT , 
+
+OpreationName CHAR(50), 
+
+Distance INT, 
+
+ReqDevice CHAR(50) ); 
+
+ 
+
+CREATE TABLE Regular_maintenance( 
+
+Distance INT , 
+
+OrderID INT, 
+
+LicenNum CHAR(50) , 
+
+DurationTotal INT, 
+
+FOREIGN KEY (LicenNum) REFERENCES Car(LicenNum), 
+
+FOREIGN KEY (OrderID) REFERENCES Invoice(OrderID)); 
+
+ 
+
+CREATE TABLE Owner( 
+
+LicenNum CHAR(50), 
+
+Name CHAR(50), 
+
+FOREIGN KEY (LicenNum) REFERENCES Car(LicenNum) 
+
+); 
+
+/*Add a new employe */ 
+
+INSERT INTO Employe  
+
+VALUES(88, "James Creew", "01/01/2022 00:00:00:000"); 
+
+/*[20:18:24] Query finished in 0.023 second(s). Rows affected: 1 */ 
+
+ 
+
+/*Create new car */ 
+
+INSERT INTO Car  
+
+Values( 'ABC-123', 40000); 
+
+ 
+
+INSERT INTO Car  
+
+Values( 'BVC-123', 80000); 
+
+ 
+
+ 
+
+/*Create new customer */ 
+
+INSERT INTO Customer 
+
+Values(123, 'ABC-123', 'AlliSmith', 04081688, 'homer@home.com', 'Mistdrive 15'); 
+
+ 
+
+INSERT INTO Customer  
+
+Values(456, 'BVC-123', 'Trudoro', 04088779, 'dseer@hpre.com', 'Doomdrive 98'); 
+
+ 
+
+ 
+
+/* Create new Employe */ 
+
+INSERT INTO Employe  
+
+VALUES(1000, 'Veeti Hakkinen', '2021-05-23T14:25:10' ); 
+
+/*[21:17:25] Query finished in 0.013 second(s). Rows affected: 1 */ 
+
+ 
+
+/* Create new Invoice */ 
+
+INSERT INTO Invoice  
+
+VALUES(123, 123, 88, 48, "01/01/2022 00:00:00:000", "unpaid", 1000, 1000, 0); 
+
+ 
+
+UPDATE Invoice 
+
+SET RemindersNo = 1 
+
+WHERE OrderID = 123 ;
+
+ 
+
+INSERT INTO Invoice  
+
+VALUES(456, 456, 1000, 48, "04/01/2022 00:00:00:000", "unpaid", 1000, 1000, 0) ;
+
+ 
+
+/* Create new reminder*/ 
+
+INSERT INTO Reminder  
+
+VALUES(123, 320, 1320); 
+
+ 
+
+INSERT INTO Reminder  
+
+VALUES(456, 70, 1070); 
+
+ 
+
+INSERT INTO Reminder  
+
+VALUES(456, 70, 1140); 
+
+ 
+
+ 
+
+/*Creare new spare part*/ 
+
+INSERT INTO SparePart  
+
+VALUES(123, 11427, 2, 70 ); 
+
+/* [17:30:40] Query finished in 0.008 second(s). Rows affected: 1*/ 
+
+ 
+
+/*Create new reservation for employee*/ 
+
+INSERT INTO Reservation_of_operation  
+
+VALUES(123, 1000, NULL , "02/01/2022 00:00:00:000", "03/01/2022 00:07:00:000" ); 
+
+/* [17:34:59] Query finished in 0.009 second(s). Rows affected: 1*/ 
+
+ 
+
+/*Create new device */ 
+
+INSERT INTO Device  
+
+VALUES(1, 'Hoister', "01/02/2022 00:00:00:000" ); 
+
+/* [17:38:43] Query finished in 0.010 second(s). Rows affected: 1*/ 
+
+ 
+
+/*Create new reservation for a device */ 
+
+INSERT INTO Reservation_of_operation  
+
+VALUES(123, NULL, 1 , "02/01/2022 00:00:00:000", "03/01/2022 00:07:00:000" ) ;
+
+/* [17:41:15] Query finished in 0.007 second(s). Rows affected: 1*/ 
+
+ 
+
+/*Create new absence of employee */ 
+
+INSERT INTO Absences  
+
+VALUES(1000, "09/01/2022 00:00:00:000", "10/01/2022 00:07:00:000" ); 
+
+ 
+
+/*Create new repair */ 
+
+INSERT INTO Repair  
+
+VALUES("Engine swap", 123, "ABC-123", 7 ); 
+
+ 
+
+/*Create new operations */ 
+
+INSERT INTO Operation  
+
+VALUES(3, "Take engine out", NULL, "Hoister" ); 
+
+ 
+
+INSERT INTO Operation  
+
+VALUES(4, "Put engine in", NULL, "Hoister" ); 
+
+ 
+
+INSERT INTO Operation  
+
+VALUES(4, "Oil changet", 60000, NULL ); 
+
+ 
+
+ 
+
+/*Create new owner*/ 
+
+INSERT INTO Owner 
+
+VALUES("ABC-123", "Mary Holinen" ); 
+
+ 
+
+INSERT INTO Owner  
+
+VALUES("ABC-123", "Jake Harin" ); 
+
+ 
+
+/*Create new regular maintinance */ 
+
+INSERT INTO Regular_maintenance  
+
+VALUES(70000, 456, "BVC-123",4); 
